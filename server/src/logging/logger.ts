@@ -1,23 +1,5 @@
-export enum LogLevel {
-    None,
-    Error,
-    Information,
-    Verbose,
-    Debug
-}
-
-export enum LoggerOutputs {
-    Console
-}
-
-export interface LoggerOptions {
-    outputs: [OutputOption]
-}
-
-export interface OutputOption {
-    output: LoggerOutputs
-    level: LogLevel,
-}
+import { LoggerConsole } from "./strategies/console-strategy"
+import { LoggerOptions, LoggerOutputs, LogLevel } from "./types/logger.types"
 
 export class Logger {
     options: LoggerOptions = {
@@ -85,18 +67,4 @@ export class Logger {
         else
             return this.loggers.default
     }
-}
-
-interface LoggerStrategy {
-    error(messageObject: any): void
-    info(messageObject: any): void
-    verbose(messageObject: any): void
-    log(messageObject: any): void
-}
-
-class LoggerConsole implements LoggerStrategy {
-    error = (messageObject: any) => console.error(messageObject)
-    info = (messageObject: any) => console.info(messageObject)
-    verbose = (messageObject: any) => console.log(messageObject)
-    log = (messageObject: any) => console.log(messageObject)
 }

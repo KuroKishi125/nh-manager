@@ -1,25 +1,6 @@
-import { CallbackFunction, QueueRequest } from "./@types/fetching-queue"
-import { Logger } from "./utils/logger"
+import { Logger } from "../logging/logger"
+import { AsyncTask, CallbackFunction, QueueRequest } from "./types/fetching-queue.types"
 
-export class AsyncTask {
-    callback: CallbackFunction
-    args: any[]
-    startTime: Date | undefined = undefined
-
-    constructor(callback: any, args: any[]) {
-        this.callback = callback
-        this.args = args
-    }
-
-    start(): Promise<any> {
-        this.startTime = new Date()
-        return this.callback(...this.args)
-    }
-
-    getStartTime(): Date | undefined {
-        return this.startTime
-    }
-}
 
 export class FetchingQueue {
 
@@ -190,7 +171,7 @@ export class FetchingQueue {
         let requestToCompare = this.queues.finished.at(-this.restrictions.RATE_SAMPLE_SIZE)
 
         let currentTime = new Date().getTime()
-        let timeNMinusSampleSizeRequest = requestToCompare!.task.getStartTime().getTime()
+        let timeNMinusSampleSizeRequest = requestToCompare!.task.getStartTime()?.getTime() || 0
         let timeUntilRequestQuota = milisecondsBetweenNRequests - (currentTime - timeNMinusSampleSizeRequest)
 
         this.logger.verbose([minAvgTimeBetweenRequest, milisecondsBetweenNRequests, timeUntilRequestQuota])

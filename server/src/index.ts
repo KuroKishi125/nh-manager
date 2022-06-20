@@ -1,8 +1,10 @@
 import express from "express";
 import axios from "axios"
 import cors from "cors"
-import { AsyncTask, FetchingQueue } from "./fetching-queue";
+import { FetchingQueue } from "./queue/fetching-queue";
 import { codes } from "./data";
+import { AsyncTask } from "./queue/types/fetching-queue.types";
+
 
 var PORT = process.env.PORT || 8080;
 var MAX_PARALLEL_REQUESTS = 5
