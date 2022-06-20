@@ -1,8 +1,8 @@
+import { config } from "../../config/config"
 import { Logger } from "../logging/logger"
-import { AsyncTask, CallbackFunction, QueueRequest } from "./types/fetching-queue.types"
+import { AsyncTask, QueueRequest } from "./types/fetching-queue.types"
 
-
-export class FetchingQueue {
+class FetchingQueue {
 
     private queues = {
         pending: [] as QueueRequest[],
@@ -179,3 +179,5 @@ export class FetchingQueue {
     }
 }
 
+let queue = new FetchingQueue(config.queue.MAX_PARALLEL_REQUESTS)
+export default queue
