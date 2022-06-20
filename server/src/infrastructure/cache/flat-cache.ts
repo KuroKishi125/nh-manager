@@ -2,20 +2,19 @@ import path from 'path'
 import flatCache from 'flat-cache'
 import crypto from 'crypto'
 import { CacheItem } from './types/cache-item'
-
+import { Logger } from '../logging/logger'
 /* FIND MORE INFORMATION AT: https://github.com/royriojas/flat-cache */
+let logger = new Logger()
 
 export function cacheMiddleware(req, res, next) {
     const key = getKey(req)
-    console.log(key)
 
     var cacheContent = cache.getKey(key);
     if (cacheContent) {
-        console.log("ITEM FOUND IN CACHE!!")
+        logger.log(`retrieving response from cache: ${req.path}`)
         res.json(JSON.parse(cacheContent.data));
     } else {
         // Set the send and json methods to update the cache before returning the request
-        console.log("ITEM NOT FOUND")
         interceptSendAndJsonMethods(req, res)
         next()
     }
